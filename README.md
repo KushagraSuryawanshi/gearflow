@@ -24,3 +24,11 @@ npm run build
 ```
 
 Branch and review expectations are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Containers
+
+Copy `.env.example` to `.env`, adjust local values, and start the foundation services with:
+
+```text
+docker compose up --build
+```
