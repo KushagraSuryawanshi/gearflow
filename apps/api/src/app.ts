@@ -1,5 +1,6 @@
 import express from 'express';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import { authRouter } from './modules/auth/auth.routes.js';
 
 export function createApp() {
   const app = express();
@@ -9,7 +10,7 @@ export function createApp() {
   app.get('/api/health', (_req, res) => {
     res.json({ data: { status: 'ok' } });
   });
-
+  app.use('/api/auth', authRouter);
   app.use(notFoundHandler);
   app.use(errorHandler);
 
