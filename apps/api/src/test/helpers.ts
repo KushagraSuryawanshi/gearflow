@@ -27,7 +27,9 @@ export async function createUser(role: Role = 'BORROWER') {
 export function bearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
 }
-export function createCategory(name = 'Cameras') {
+let categoryCount = 0;
+
+export function createCategory(name = `Category ${++categoryCount}`) {
   return prisma.category.create({ data: { name } });
 }
 
