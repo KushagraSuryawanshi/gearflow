@@ -7,3 +7,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  BORROWER
+  STAFF
+  ADMIN
+}
+
+enum EquipmentStatus {
+  AVAILABLE
+  UNDER_MAINTENANCE
+}
+
+enum BookingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  COLLECTED
+  RETURNED
+  CANCELLED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(BORROWER)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  bookings     Booking[]
+}
+
+model Category {
+  id        String      @id @default(cuid())
+  name      String      @unique
+  equipment Equipment[]
+}
+
+model Equipment {
+  id          String          @id @default(cuid())
+  name        String
+  description String?
+  status      EquipmentStatus @default(AVAILABLE)
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  bookings    Booking[]
+
+  @@index([categoryId])
+}
+
+model Booking {
+  id          String        @id @default(cuid())
+  equipmentId String
+  borrowerId  String
+  equipment   Equipment     @relation(fields: [equipmentId], references: [id])
+  borrower    User          @relation(fields: [borrowerId], references: [id])
+  startDate   DateTime      @db.Date
+  endDate     DateTime      @db.Date
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([equipmentId, status])
+  @@index([borrowerId])
+}
