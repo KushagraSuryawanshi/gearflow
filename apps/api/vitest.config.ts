@@ -10,5 +10,12 @@ export default defineConfig({
     env: {
       JWT_SECRET: 'test-only-secret-that-is-long-enough-for-hs256',
     },
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.ts'],
+      exclude: ['src/**/*.test.ts', 'src/test/**', 'src/server.ts', 'src/seed.ts'],
+      reporter: ['text', 'html'],
+      thresholds: { lines: 80, branches: 80 },
+    },
   },
 });
