@@ -5,7 +5,7 @@ import { ApiError } from '../../lib/errors.js';
 import { idParamsSchema, parse } from '../../lib/validate.js';
 import { authenticate } from '../../middleware/authenticate.js';
 import { requireRole } from '../../middleware/requireRole.js';
-
+import { listBookingsForEquipment } from '../bookings/booking.service.js';
 const equipmentSchema = z.object({
   name: z.string().trim().min(1).max(100),
   description: z.string().trim().max(500).nullish(),
@@ -95,4 +95,8 @@ equipmentRouter.patch('/:id/maintenance', requireRole('STAFF', 'ADMIN'), async (
     select: equipmentSelect,
   });
   res.json({ data: equipment });
+});
+equipmentRouter.get('/:id/bookings', requireRole('STAFF', 'ADMIN'), async (req, res) => {
+  const { id } = parse(idParamsSchema, req.params);
+  res.json({ data: await listBookingsForEquipment(id) });
 });
