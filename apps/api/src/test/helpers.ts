@@ -1,4 +1,4 @@
-import type { EquipmentStatus, Role } from '@prisma/client';
+import type { BookingStatus, EquipmentStatus, Role } from '@prisma/client';
 import { prisma } from '../lib/db.js';
 import { hashPassword } from '../lib/password.js';
 import { signToken } from '../lib/token.js';
@@ -37,4 +37,23 @@ export function createEquipment(
   status: EquipmentStatus = 'AVAILABLE',
 ) {
   return prisma.equipment.create({ data: { name, categoryId, status } });
+}
+
+// Inserts a booking directly, so tests can set up any status without going through the API.
+export function insertBooking(options: {
+  equipmentId: string;
+  borrowerId: string;
+  startDate: string;
+  endDate: string;
+  status?: BookingStatus;
+}) {
+  return prisma.booking.create({
+    data: {
+      equipmentId: options.equipmentId,
+      borrowerId: options.borrowerId,
+      startDate: new Date(options.startDate),
+      endDate: new Date(options.endDate),
+      status: options.status ?? 'PENDING',
+    },
+  });
 }
