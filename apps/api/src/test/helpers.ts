@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { EquipmentStatus, Role } from '@prisma/client';
 import { prisma } from '../lib/db.js';
 import { hashPassword } from '../lib/password.js';
 import { signToken } from '../lib/token.js';
@@ -26,4 +26,15 @@ export async function createUser(role: Role = 'BORROWER') {
 
 export function bearer(token: string): { Authorization: string } {
   return { Authorization: `Bearer ${token}` };
+}
+export function createCategory(name = 'Cameras') {
+  return prisma.category.create({ data: { name } });
+}
+
+export function createEquipment(
+  categoryId: string,
+  name = 'Test Camera',
+  status: EquipmentStatus = 'AVAILABLE',
+) {
+  return prisma.equipment.create({ data: { name, categoryId, status } });
 }

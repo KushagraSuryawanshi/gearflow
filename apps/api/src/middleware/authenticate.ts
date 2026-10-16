@@ -48,3 +48,9 @@ export async function authenticate(
   req.user = user;
   next();
 }
+export function currentUser(req: Request): AuthUser {
+  if (!req.user) {
+    throw new ApiError('UNAUTHORIZED', 'Login required');
+  }
+  return req.user;
+}

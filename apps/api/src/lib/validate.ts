@@ -1,7 +1,7 @@
-import type { z } from 'zod';
+import { z, type ZodType } from 'zod';
 import { ApiError } from './errors.js';
 
-export function parse<T>(schema: z.ZodType<T>, data: unknown): T {
+export function parse<T>(schema: ZodType<T>, data: unknown): T {
   const result = schema.safeParse(data);
   if (!result.success) {
     const message = result.error.issues
@@ -11,3 +11,5 @@ export function parse<T>(schema: z.ZodType<T>, data: unknown): T {
   }
   return result.data;
 }
+
+export const idParamsSchema = z.object({ id: z.string().min(1) });

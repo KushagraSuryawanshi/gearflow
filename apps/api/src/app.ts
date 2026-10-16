@@ -1,6 +1,8 @@
 import express from 'express';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { authRouter } from './modules/auth/auth.routes.js';
+import { categoriesRouter } from './modules/categories/categories.routes.js';
+import { equipmentRouter } from './modules/equipment/equipment.routes.js';
 
 export function createApp() {
   const app = express();
@@ -11,6 +13,9 @@ export function createApp() {
     res.json({ data: { status: 'ok' } });
   });
   app.use('/api/auth', authRouter);
+  app.use('/api/categories', categoriesRouter);
+  app.use('/api/equipment', equipmentRouter);
+
   app.use(notFoundHandler);
   app.use(errorHandler);
 
