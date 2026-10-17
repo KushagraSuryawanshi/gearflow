@@ -53,6 +53,7 @@ export function EquipmentForm({
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder="e.g. Canon EOS R6 #001"
+              maxLength={100}
               required
               disabled={busy}
               autoFocus
@@ -91,6 +92,7 @@ export function EquipmentForm({
               onChange={(event) => setDescription(event.target.value)}
               placeholder="What should a borrower know about this item?"
               rows={4}
+              maxLength={500}
               disabled={busy}
             />
           </label>

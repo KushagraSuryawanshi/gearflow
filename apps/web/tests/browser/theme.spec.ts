@@ -50,7 +50,7 @@ test('system appearance works without storage and the theme control remains usab
   await page.keyboard.press('Enter');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.getByRole('button', { name: 'Open navigation' }).click();
-  await expect(page.getByRole('dialog')).toHaveCSS('background-color', 'rgb(32, 42, 37)');
+  await expect(page.getByRole('dialog')).toHaveCSS('background-color', 'rgb(32, 37, 31)');
   await page.getByRole('link', { name: 'People & roles' }).click();
   await expect(page.getByRole('heading', { name: 'People & roles' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(320);

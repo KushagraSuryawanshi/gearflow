@@ -110,7 +110,7 @@ export function UsersPage() {
   return (
     <>
       <PageHeading
-        eyebrow="MANAGE / ACCESS"
+        eyebrow="ACCESS"
         title="People & roles"
         description="Give each person the access they need to use and manage the equipment room."
       />
@@ -168,7 +168,7 @@ export function UsersPage() {
               <tbody>
                 {items.map((person) => (
                   <tr key={person.id}>
-                    <td>
+                    <td data-label="Person">
                       <div className="person-cell">
                         <span className="avatar">{initials(person.name)}</span>
                         <div>
@@ -180,12 +180,12 @@ export function UsersPage() {
                         </div>
                       </div>
                     </td>
-                    <td>
+                    <td data-label="Role">
                       <span className={`user-role role-${person.role.toLowerCase()}`}>
                         {roleNames[person.role]}
                       </span>
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className="row-actions">
                         <button
                           className="button button-secondary button-small"

@@ -52,23 +52,14 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
         }
       />
       {notice && <Alert tone="success">{notice}</Alert>}
-      <div className="desk-note">
-        <Icon name={requests ? 'requests' : 'loans'} size={23} />
-        <div>
-          <strong>
-            {requests
-              ? 'A second check before every approval.'
-              : 'A handover is more than a status change.'}
-          </strong>
-          <p>
-            {requests
-              ? 'Availability is checked by the server. Your own requests need approval from another staff member.'
-              : 'Only record collection or return once the equipment has physically changed hands.'}
-          </p>
-        </div>
-        <span className="desk-count">
-          {data?.length ?? '—'}
-          <small>{requests ? 'to review' : 'active'}</small>
+      <div className="desk-context">
+        <p>
+          {requests
+            ? 'Check the dates before approval. Another staff member must review your own requests.'
+            : 'Approved means ready to collect. Collected means on loan. Record each physical handover below.'}
+        </p>
+        <span className="queue-count">
+          {data?.length ?? '--'} <span>{requests ? 'to review' : 'active'}</span>
         </span>
       </div>
       <section className="panel">
@@ -107,7 +98,7 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
               requests ? (
                 <>
                   <button
-                    className="button button-quiet button-small"
+                    className="button button-quiet button-small danger-text"
                     onClick={() => setAction({ booking, kind: 'reject' })}
                     disabled={booking.status !== 'PENDING'}
                   >
@@ -133,7 +124,7 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
                 </button>
               ) : booking.status === 'COLLECTED' ? (
                 <button
-                  className="button button-secondary button-small"
+                  className="button button-primary button-small"
                   onClick={() => setAction({ booking, kind: 'return' })}
                 >
                   Record return

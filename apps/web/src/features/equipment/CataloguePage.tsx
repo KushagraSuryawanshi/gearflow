@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from '../../components/Link';
-import { EquipmentArt, Icon } from '../../components/Icon';
+import { Icon } from '../../components/Icon';
+import { EquipmentArt } from '../../components/EquipmentArt';
 import { EmptyState, EquipmentBadge, ErrorState, Loading, PageHeading } from '../../components/ui';
 import { api } from '../../lib/api';
 import { useResource } from '../../lib/useResource';
@@ -34,29 +35,25 @@ export function CataloguePage() {
   }
   return (
     <>
-      <PageHeading
-        eyebrow="THE EQUIPMENT ROOM"
-        title="Find your next piece of kit."
-        description="Browse the collection, choose your dates and send a booking request."
-        actions={
-          <Link className="button button-secondary" href="/bookings">
-            My bookings
-            <Icon name="arrow" size={17} />
-          </Link>
-        }
-      />
-      <div className="catalogue-intro">
-        <div>
-          <span className="eyebrow">SHARED TOOLS. MORE POSSIBILITIES.</span>
-          <p>
-            A little planning goes a long way.
+      <div className="catalogue-heading">
+        <PageHeading
+          eyebrow="EQUIPMENT"
+          title="Find your next piece of kit."
+          description="Shared equipment, ready when you are."
+          actions={
+            <Link className="button button-secondary" href="/bookings">
+              My bookings
+              <Icon name="arrow" size={17} />
+            </Link>
+          }
+        />
+        <div className="collection-index">
+          <strong>{data ? String(data.equipment.length).padStart(2, '0') : '--'}</strong>
+          <span>
+            items
             <br />
-            <strong>Book it. Make something. Bring it back.</strong>
-          </p>
-        </div>
-        <div className="intro-number">
-          <strong>{data ? String(data.equipment.length).padStart(2, '0') : '—'}</strong>
-          <span>items in the collection</span>
+            in circulation
+          </span>
         </div>
       </div>
       <section aria-label="Equipment catalogue">
@@ -114,16 +111,24 @@ export function CataloguePage() {
                     className="equipment-card"
                     href={`/equipment/${encodeURIComponent(item.id)}`}
                   >
-                    <EquipmentArt category={item.category.name} name={item.name} />
+                    <div className="equipment-card-image">
+                      <EquipmentArt category={item.category.name} name={item.name} />
+                      {item.status === 'UNDER_MAINTENANCE' && (
+                        <span className="maintenance-flag">In service / maintenance</span>
+                      )}
+                    </div>
                     <div className="equipment-card-body">
                       <div className="equipment-card-category">
                         {item.category.name}
-                        <Icon name="arrow" size={17} />
+                        <span className="mono">{item.id.slice(-6).toUpperCase()}</span>
                       </div>
                       <h2>{item.name}</h2>
                       <p>{item.description || 'View this item and choose your booking dates.'}</p>
                       <div className="equipment-card-footer">
                         <EquipmentBadge maintenance={item.status === 'UNDER_MAINTENANCE'} />
+                        <span className="card-cta">
+                          View kit <Icon name="arrow" size={17} />
+                        </span>
                       </div>
                     </div>
                   </Link>

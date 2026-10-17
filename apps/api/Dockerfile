@@ -14,6 +14,17 @@ COPY apps/api apps/api
 
 RUN npx prisma generate --schema apps/api/prisma/schema.prisma
 RUN npm run build --workspace=@gearflow/api
+
+FROM build AS migrate
+
+CMD ["npx", "prisma", "migrate", "deploy", "--schema", "apps/api/prisma/schema.prisma"]
+
+FROM build AS seed
+
+CMD ["npx", "tsx", "apps/api/src/seed.ts"]
+
+FROM build AS runtime-deps
+
 RUN npm prune --omit=dev
 
 FROM node:22-alpine AS runtime
@@ -21,7 +32,7 @@ FROM node:22-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 
-COPY --from=build /app/node_modules ./node_modules
+COPY --from=runtime-deps /app/node_modules ./node_modules
 COPY --from=build /app/apps/api/package.json ./apps/api/package.json
 COPY --from=build /app/apps/api/dist ./apps/api/dist
 

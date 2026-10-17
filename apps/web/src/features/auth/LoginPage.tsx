@@ -3,7 +3,8 @@ import { Brand } from '../../app/Shell';
 import { useSession } from '../../app/useSession';
 import { errorMessage } from '../../lib/api';
 import { Alert } from '../../components/ui';
-import { EquipmentArt, Icon } from '../../components/Icon';
+import { Icon } from '../../components/Icon';
+import { EquipmentArt } from '../../components/EquipmentArt';
 import { ThemeToggle } from '../../components/ThemeToggle';
 
 export function LoginPage() {
@@ -30,34 +31,23 @@ export function LoginPage() {
     <div className="login-page">
       <section className="login-story">
         <Brand />
-        <p className="eyebrow">THE EQUIPMENT ROOM</p>
         <h1>
-          Good equipment.
+          Less admin.
           <br />
-          Ready for your
+          More room
           <br />
-          <em>next idea.</em>
+          <em>to make.</em>
         </h1>
         <p className="login-intro">
           Find the kit you need, book your dates and keep every handover in one place.
         </p>
         <div className="login-illustration">
           <EquipmentArt category="camera" large />
-          <span className="illustration-caption">
-            A little more making.
-            <br />A little less paperwork.
-          </span>
         </div>
         <div className="login-steps">
-          <span>
-            <b>01</b> Find your kit
-          </span>
-          <span>
-            <b>02</b> Request dates
-          </span>
-          <span>
-            <b>03</b> Get to work
-          </span>
+          <span>Find your kit</span>
+          <span>Request dates</span>
+          <span>Get to work</span>
         </div>
       </section>
       <main className="login-main">
@@ -117,7 +107,6 @@ export function LoginPage() {
               Need access? Contact your administrator.
             </p>
           </div>
-          <p className="login-footer">GEARFLOW · SHARED EQUIPMENT, SIMPLIFIED</p>
         </div>
       </main>
     </div>

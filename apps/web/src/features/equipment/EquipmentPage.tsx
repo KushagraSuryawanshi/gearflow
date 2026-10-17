@@ -2,7 +2,8 @@ import { useCallback, useState, type FormEvent } from 'react';
 import { Link } from '../../components/Link';
 import { useSession } from '../../app/useSession';
 import { ConfirmAction } from '../../components/ConfirmAction';
-import { EquipmentArt, Icon } from '../../components/Icon';
+import { Icon } from '../../components/Icon';
+import { EquipmentArt } from '../../components/EquipmentArt';
 import {
   Alert,
   BookingDetails,
@@ -43,7 +44,7 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
   }
   return (
     <aside className="booking-panel">
-      <p className="eyebrow">MAKE IT HAPPEN</p>
+      <p className="eyebrow">BOOKING DATES</p>
       <h2>Request this equipment</h2>
       {created ? (
         <div className="booking-success">
@@ -73,8 +74,7 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
       ) : (
         <>
           <p className="muted">
-            Choose the dates you need it. Availability is checked when you request and again at
-            approval.
+            Choose your date range. Existing bookings only block overlapping dates.
           </p>
           {maintenance && (
             <Alert tone="info">
@@ -178,12 +178,15 @@ export function EquipmentPage({ id }: { id: string }) {
             {notice && <Alert tone="success">{notice}</Alert>}
             <div className="equipment-detail-layout">
               <div className="equipment-detail">
-                <EquipmentArt category={data.category.name} name={data.name} large />
                 <div className="detail-heading">
                   <p className="eyebrow">{data.category.name}</p>
                   <h1>{data.name}</h1>
                   <EquipmentBadge maintenance={data.status === 'UNDER_MAINTENANCE'} />
                 </div>
+                <EquipmentArt category={data.category.name} name={data.name} large />
+                <p className="art-disclaimer">
+                  Category illustration. Refer to the item description for included equipment.
+                </p>
                 <p className="equipment-description">
                   {data.description || 'No additional description has been provided for this item.'}
                 </p>

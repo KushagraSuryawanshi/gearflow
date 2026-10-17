@@ -32,3 +32,9 @@ Copy `.env.example` to `.env`, adjust local values, and start the foundation ser
 ```text
 docker compose up --build
 ```
+
+Migrations run automatically after PostgreSQL is healthy. To load the local demo accounts and equipment explicitly, run:
+
+```text
+docker compose --profile seed run --rm seed
+```
