@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import type { User } from '../types/api';
 import { initials } from '../lib/booking';
 import { Dialog } from '../components/ui';
-import { Icon, type IconName } from '../components/Icon';
+import { Icon } from '../components/Icon';
 import { Link } from '../components/Link';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { useSession } from './useSession';
@@ -22,7 +22,7 @@ export function Brand() {
 }
 
 function Navigation({ user, path, close }: { user: User; path: string; close?: () => void }) {
-  function item(href: string, label: string, icon: IconName) {
+  function item(href: string, label: string) {
     const active = path === href || (href === '/equipment' && path.startsWith('/equipment/'));
     return (
       <Link
@@ -32,30 +32,33 @@ function Navigation({ user, path, close }: { user: User; path: string; close?: (
         aria-current={active ? 'page' : undefined}
         onClick={close}
       >
-        <Icon name={icon} />
         <span>{label}</span>
-        {active && <span className="nav-active-dot" />}
+        {active && (
+          <span className="nav-active-dot" aria-hidden="true">
+            ↗
+          </span>
+        )}
       </Link>
     );
   }
   return (
     <nav aria-label="Main navigation">
       <p className="nav-label">Your workspace</p>
-      {item('/equipment', 'Equipment', 'equipment')}
-      {item('/bookings', 'My bookings', 'calendar')}
+      {item('/equipment', 'Equipment')}
+      {item('/bookings', 'My bookings')}
       {user.role !== 'BORROWER' && (
         <>
           <p className="nav-label">Loan desk</p>
-          {item('/requests', 'Pending requests', 'requests')}
-          {item('/loans', 'Active loans', 'loans')}
+          {item('/requests', 'Pending requests')}
+          {item('/loans', 'Active loans')}
         </>
       )}
       {user.role === 'ADMIN' && (
         <>
           <p className="nav-label">Manage</p>
-          {item('/admin/equipment', 'Equipment', 'equipment')}
-          {item('/admin/categories', 'Categories', 'categories')}
-          {item('/admin/users', 'People & roles', 'users')}
+          {item('/admin/equipment', 'Inventory')}
+          {item('/admin/categories', 'Categories')}
+          {item('/admin/users', 'People & roles')}
         </>
       )}
     </nav>
@@ -79,10 +82,6 @@ export function Shell({ user, path, children }: { user: User; path: string; chil
         <div className="workspace-label">THE EQUIPMENT ROOM</div>
         <Navigation user={user} path={path} />
         <div className="sidebar-bottom">
-          <div className="sidebar-note">
-            <span className="small-dot" />
-            Shared equipment. Kept in order.
-          </div>
           <div className="account">
             <span className="avatar">{initials(user.name)}</span>
             <div>
@@ -113,7 +112,12 @@ export function Shell({ user, path, children }: { user: User; path: string; chil
             <Icon name="menu" />
           </button>
           <span className="workspace-breadcrumb">
-            GearFlow <span>/</span> Shared equipment
+            Workspace <span>/</span>{' '}
+            {path.startsWith('/admin')
+              ? 'Administration'
+              : ['/requests', '/loans'].includes(path)
+                ? 'Loan desk'
+                : 'Equipment room'}
           </span>
           <div className="workspace-user">
             <ThemeToggle />

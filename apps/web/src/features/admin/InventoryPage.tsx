@@ -38,7 +38,7 @@ export function InventoryPage() {
   return (
     <>
       <PageHeading
-        eyebrow="MANAGE / INVENTORY"
+        eyebrow="INVENTORY"
         title="Equipment management"
         description="One record for every physical item. Keep the collection accurate and ready to borrow."
         actions={
@@ -107,7 +107,7 @@ export function InventoryPage() {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id}>
-                    <td>
+                    <td data-label="Equipment">
                       <Link
                         className="table-title"
                         href={`/equipment/${encodeURIComponent(item.id)}`}
@@ -116,11 +116,11 @@ export function InventoryPage() {
                       </Link>
                       <small className="mono">{item.id}</small>
                     </td>
-                    <td>{item.category.name}</td>
-                    <td>
+                    <td data-label="Category">{item.category.name}</td>
+                    <td data-label="Availability">
                       <EquipmentBadge maintenance={item.status === 'UNDER_MAINTENANCE'} />
                     </td>
-                    <td>
+                    <td data-label="Actions">
                       <div className="row-actions">
                         <button
                           className="button button-quiet button-small"

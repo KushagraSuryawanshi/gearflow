@@ -47,6 +47,7 @@ function CategoryForm({
               value={name}
               onChange={(event) => setName(event.target.value)}
               placeholder="e.g. Cameras"
+              maxLength={100}
               required
               disabled={busy}
               autoFocus
@@ -80,9 +81,9 @@ export function CategoriesPage() {
   return (
     <>
       <PageHeading
-        eyebrow="MANAGE / ORGANISATION"
+        eyebrow="CATEGORIES"
         title="Categories"
-        description="A simple way to keep the equipment room easy to explore."
+        description="Organise the collection by equipment type."
         actions={
           <button className="button button-primary" onClick={() => setEditing({ category: null })}>
             <Icon name="plus" size={18} />
@@ -107,11 +108,9 @@ export function CategoriesPage() {
           <ErrorState message={error} retry={reload} />
         ) : data?.length ? (
           <ul className="category-list">
-            {data.map((category) => (
+            {data.map((category, index) => (
               <li key={category.id}>
-                <span className="category-symbol">
-                  <Icon name="categories" size={21} />
-                </span>
+                <span className="category-symbol">{String(index + 1).padStart(2, '0')}</span>
                 <div className="category-info">
                   <h3>{category.name}</h3>
                   <span className="mono">{category.id}</span>

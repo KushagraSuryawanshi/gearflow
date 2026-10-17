@@ -35,9 +35,9 @@ export function MyBookingsPage() {
   return (
     <>
       <PageHeading
-        eyebrow="YOUR WORKSPACE"
+        eyebrow="BOOKINGS"
         title="My bookings"
-        description="From the first request to the final return. Keep track of your equipment here."
+        description="Your kit, from request to return."
         actions={
           <Link className="button button-primary" href="/equipment">
             <Icon name="plus" size={18} />
@@ -46,21 +46,7 @@ export function MyBookingsPage() {
         }
       />
       {notice && <Alert tone="success">{notice}</Alert>}
-      <div className="summary-strip">
-        <div>
-          <span>Awaiting review</span>
-          <strong>{data?.filter((item) => item.status === 'PENDING').length ?? '—'}</strong>
-        </div>
-        <div>
-          <span>Ready to collect</span>
-          <strong>{data?.filter((item) => item.status === 'APPROVED').length ?? '—'}</strong>
-        </div>
-        <div>
-          <span>Currently on loan</span>
-          <strong>{data?.filter((item) => item.status === 'COLLECTED').length ?? '—'}</strong>
-        </div>
-      </div>
-      <section className="panel">
+      <section className="panel personal-bookings">
         <div className="panel-toolbar">
           <div className="tabs" role="group" aria-label="Booking period">
             {(['current', 'past', 'all'] as const).map((value) => (
