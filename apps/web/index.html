@@ -3,6 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5f4ef" />
+    <script>
+      (() => {
+        let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        try {
+          const saved = localStorage.getItem('gearflow.theme');
+          if (saved === 'light' || saved === 'dark') theme = saved;
+        } catch {
+          // Storage may be blocked; the system preference still works.
+        }
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <meta
+      name="description"
+      content="GearFlow equipment booking and loan management. Find equipment, request dates and manage every handover."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>GearFlow</title>
   </head>
   <body>
