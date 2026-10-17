@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 // Tests run against their own database so they never touch the demo data in "gearflow".
 const TEST_DATABASE_URL =
   process.env['TEST_DATABASE_URL'] ??
-  'postgresql://gearflow:change-me-locally@localhost:5432/gearflow_test?schema=public';
+  'postgresql://gearflow:change-me-locally@localhost:5433/gearflow_test?schema=public';
 
 async function createDatabaseIfMissing(databaseUrl: string): Promise<void> {
   const url = new URL(databaseUrl);
