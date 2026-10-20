@@ -124,7 +124,7 @@ All application routes except login and health require a valid bearer token.
 - `GET /api/users`
 - `PATCH /api/users/:id/role`
 
-`GET /api/health` is the container health endpoint. There is currently no metrics endpoint.
+`GET /api/health` is the container health endpoint. Prometheus can scrape application metrics from `GET /api/metrics`; Nginx blocks that route publicly in the container deployment.
 
 ## Database
 

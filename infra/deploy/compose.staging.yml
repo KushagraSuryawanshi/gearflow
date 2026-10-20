@@ -1,0 +1,12 @@
+services:
+  seed:
+    profiles: [seed]
+    image: ghcr.io/${GHCR_NAMESPACE:?GHCR_NAMESPACE is required}/gearflow-tools:${IMAGE_TAG:?IMAGE_TAG is required}
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:?POSTGRES_USER is required}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@db:5432/${POSTGRES_DB:?POSTGRES_DB is required}?schema=public
+      NODE_ENV: staging
+    command: [npx, tsx, apps/api/src/seed.ts]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: 'no'

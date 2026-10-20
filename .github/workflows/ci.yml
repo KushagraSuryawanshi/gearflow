@@ -1,4 +1,4 @@
-name: CI
+name: CI and release
 
 on:
   push:
@@ -8,9 +8,11 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   checks:
+    name: Verify application
     runs-on: ubuntu-latest
     env:
       TEST_DATABASE_URL: postgresql://gearflow:gearflow-ci-password@localhost:5432/gearflow_test?schema=public
@@ -46,6 +48,9 @@ jobs:
       - name: Generate Prisma client
         run: npm run db:generate
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Lint
         run: npm run lint
 
@@ -55,5 +60,199 @@ jobs:
       - name: Test
         run: npm test
 
+      - name: Check backend coverage thresholds
+        run: npm run test:coverage --workspace=@gearflow/api
+
       - name: Build
         run: npm run build
+
+  package:
+    name: Publish immutable images
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: checks
+    runs-on: ubuntu-latest
+    outputs:
+      namespace: ${{ steps.namespace.outputs.value }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Normalize GHCR namespace
+        id: namespace
+        shell: bash
+        run: echo "value=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Sign in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push API image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          target: runtime
+          push: true
+          tags: ghcr.io/${{ steps.namespace.outputs.value }}/gearflow-api:${{ github.sha }}
+          cache-from: type=gha,scope=gearflow-api
+          cache-to: type=gha,mode=max,scope=gearflow-api
+
+      - name: Build and push API tools image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          target: tools
+          push: true
+          tags: ghcr.io/${{ steps.namespace.outputs.value }}/gearflow-tools:${{ github.sha }}
+          cache-from: type=gha,scope=gearflow-tools
+          cache-to: type=gha,mode=max,scope=gearflow-tools
+
+      - name: Build and push web image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          target: runtime
+          push: true
+          build-args: VITE_API_BASE_URL=/api
+          tags: ghcr.io/${{ steps.namespace.outputs.value }}/gearflow-web:${{ github.sha }}
+          cache-from: type=gha,scope=gearflow-web
+          cache-to: type=gha,mode=max,scope=gearflow-web
+
+  deploy-staging:
+    name: Deploy staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: package
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      DEPLOY_HOST: ${{ secrets.STAGING_HOST }}
+      DEPLOY_USER: ${{ secrets.STAGING_USER }}
+      SSH_KEY: ${{ secrets.STAGING_SSH_KEY }}
+      GHCR_USER: ${{ secrets.GHCR_DEPLOY_USER }}
+      GHCR_TOKEN: ${{ secrets.GHCR_DEPLOY_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s' "$SSH_KEY" > "$HOME/.ssh/gearflow"
+          chmod 600 "$HOME/.ssh/gearflow"
+          ssh-keyscan -H "$DEPLOY_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Upload deployment configuration
+        shell: bash
+        run: |
+          tar -czf gearflow-deployment.tgz infra/deploy
+          scp -i "$HOME/.ssh/gearflow" gearflow-deployment.tgz "$DEPLOY_USER@$DEPLOY_HOST:~/"
+          ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            'mkdir -p "$HOME/gearflow" && tar -xzf "$HOME/gearflow-deployment.tgz" -C "$HOME/gearflow" && rm "$HOME/gearflow-deployment.tgz"'
+
+      - name: Sign remote Docker into GHCR
+        shell: bash
+        run: |
+          printf '%s' "$GHCR_TOKEN" | ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "docker login ghcr.io --username '$GHCR_USER' --password-stdin"
+
+      - name: Pull and deploy staging SHA
+        shell: bash
+        run: |
+          ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "IMAGE_TAG='$GITHUB_SHA' DEPLOY_ENV=staging bash ~/gearflow/infra/deploy/deploy.sh"
+
+  staging-e2e:
+    name: Test deployed staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: staging
+    env:
+      PLAYWRIGHT_BASE_URL: ${{ secrets.STAGING_URL }}
+      E2E_RUN_ID: ${{ github.run_id }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run staging browser test
+        run: npm run test:e2e
+
+      - name: Upload Playwright failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-playwright-${{ github.sha }}
+          path: |
+            e2e/playwright-report
+            e2e/test-results
+          if-no-files-found: ignore
+          retention-days: 7
+
+  deploy-production:
+    name: Promote SHA to production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: staging-e2e
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DEPLOY_HOST: ${{ secrets.PRODUCTION_HOST }}
+      DEPLOY_USER: ${{ secrets.PRODUCTION_USER }}
+      SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+      GHCR_USER: ${{ secrets.GHCR_DEPLOY_USER }}
+      GHCR_TOKEN: ${{ secrets.GHCR_DEPLOY_TOKEN }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s' "$SSH_KEY" > "$HOME/.ssh/gearflow"
+          chmod 600 "$HOME/.ssh/gearflow"
+          ssh-keyscan -H "$DEPLOY_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Upload deployment and monitoring configuration
+        shell: bash
+        run: |
+          tar -czf gearflow-deployment.tgz infra/deploy infra/monitoring
+          scp -i "$HOME/.ssh/gearflow" gearflow-deployment.tgz "$DEPLOY_USER@$DEPLOY_HOST:~/"
+          ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            'mkdir -p "$HOME/gearflow" && tar -xzf "$HOME/gearflow-deployment.tgz" -C "$HOME/gearflow" && rm "$HOME/gearflow-deployment.tgz"'
+
+      - name: Sign remote Docker into GHCR
+        shell: bash
+        run: |
+          printf '%s' "$GHCR_TOKEN" | ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "docker login ghcr.io --username '$GHCR_USER' --password-stdin"
+
+      - name: Pull and deploy production SHA
+        shell: bash
+        run: |
+          ssh -i "$HOME/.ssh/gearflow" "$DEPLOY_USER@$DEPLOY_HOST" \
+            "IMAGE_TAG='$GITHUB_SHA' DEPLOY_ENV=production bash ~/gearflow/infra/deploy/deploy.sh"
