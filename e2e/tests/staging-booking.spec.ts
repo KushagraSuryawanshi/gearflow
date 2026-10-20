@@ -22,22 +22,24 @@ async function signOut(page: Page) {
   await expect(page.getByRole('button', { name: 'Sign in', exact: true })).toBeVisible();
 }
 
-function futureDateRange() {
+function futureDateRange(retry: number) {
   const runId = process.env.E2E_RUN_ID ?? String(Date.now());
   const hash = [...runId].reduce(
     (value, character) => (value * 31 + character.charCodeAt(0)) >>> 0,
     0,
   );
   const start = new Date();
-  start.setUTCDate(start.getUTCDate() + 90 + (hash % 3650));
+  start.setUTCDate(start.getUTCDate() + 90 + (hash % 3650) + retry * 3);
   const end = new Date(start);
   end.setUTCDate(end.getUTCDate() + 1);
   const dateOnly = (value: Date) => value.toISOString().slice(0, 10);
   return { startDate: dateOnly(start), endDate: dateOnly(end) };
 }
 
-test('a deployed staging booking can be requested, approved and cancelled', async ({ page }) => {
-  const { startDate, endDate } = futureDateRange();
+test('a deployed staging booking can be requested, approved and cancelled', async ({
+  page,
+}, testInfo) => {
+  const { startDate, endDate } = futureDateRange(testInfo.retry);
 
   await signIn(page, borrowerEmail);
   const catalogue = page.getByRole('region', { name: 'Equipment catalogue' });
@@ -75,7 +77,9 @@ test('a deployed staging booking can be requested, approved and cancelled', asyn
   await expect(bookingRow).toBeVisible();
   await bookingRow.getByRole('button', { name: 'Approve', exact: true }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Approve request' }).click();
-  await expect(page.getByRole('status')).toContainText('Booking approved');
+  await expect(page.getByRole('status').filter({ hasText: 'Booking approved' })).toContainText(
+    'Booking approved',
+  );
   await signOut(page);
 
   await signIn(page, borrowerEmail);
@@ -91,7 +95,9 @@ test('a deployed staging booking can be requested, approved and cancelled', asyn
   await expect(bookingRow).toBeVisible();
   await bookingRow.getByRole('button', { name: 'Cancel booking' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Cancel booking' }).click();
-  await expect(page.getByRole('status')).toContainText('cancelled');
+  await expect(page.getByRole('status').filter({ hasText: 'cancelled' })).toContainText(
+    'cancelled',
+  );
 
   await page.getByRole('button', { name: 'Past', exact: true }).click();
   bookingRow = page
