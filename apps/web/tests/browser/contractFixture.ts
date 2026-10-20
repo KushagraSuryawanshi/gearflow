@@ -11,7 +11,7 @@ export async function signIn(page: Page, role: keyof typeof accounts) {
   await page.getByLabel('Email address').fill(accounts[role].email);
   await page.getByLabel('Password', { exact: true }).fill('fixture-password');
   await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await expect(page.getByRole('heading', { name: 'Find your next piece of kit.' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Equipment', exact: true })).toBeVisible();
 }
 
 export async function installContractFixture(page: Page) {

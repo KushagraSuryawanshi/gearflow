@@ -37,13 +37,7 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
   return (
     <>
       <PageHeading
-        eyebrow="LOAN DESK"
         title={requests ? 'Pending requests' : 'Active loans'}
-        description={
-          requests
-            ? 'Review dates and give each request a clear next step.'
-            : 'Record equipment handovers and keep the returns moving.'
-        }
         actions={
           <button className="button button-secondary" onClick={reload} disabled={loading}>
             <Icon name="refresh" size={17} />
@@ -55,8 +49,8 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
       <div className="desk-context">
         <p>
           {requests
-            ? 'Check the dates before approval. Another staff member must review your own requests.'
-            : 'Approved means ready to collect. Collected means on loan. Record each physical handover below.'}
+            ? 'Review the dates before approving or rejecting.'
+            : 'Approved bookings are ready to collect. Collected bookings are on loan.'}
         </p>
         <span className="queue-count">
           {data?.length ?? '--'} <span>{requests ? 'to review' : 'active'}</span>
@@ -120,14 +114,14 @@ export function LoanDeskPage({ mode }: { mode: 'requests' | 'loans' }) {
                   className="button button-primary button-small"
                   onClick={() => setAction({ booking, kind: 'collect' })}
                 >
-                  Record collection
+                  Mark collected
                 </button>
               ) : booking.status === 'COLLECTED' ? (
                 <button
                   className="button button-primary button-small"
                   onClick={() => setAction({ booking, kind: 'return' })}
                 >
-                  Record return
+                  Mark returned
                 </button>
               ) : null
             }

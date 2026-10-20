@@ -47,7 +47,7 @@ test('borrower filters equipment, validates dates, requests and cancels a bookin
   await expect(
     page.getByRole('status').filter({ hasText: 'Your booking has been cancelled.' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Past bookings', exact: true }).click();
+  await page.getByRole('button', { name: 'Past', exact: true }).click();
   await expect(page.getByRole('row').filter({ hasText: 'MacBook Pro' })).toContainText('Cancelled');
   await expect(
     page
@@ -74,10 +74,10 @@ test('a borrower request moves through staff approval, collection and return', a
   await page.getByRole('link', { name: 'Active loans', exact: true }).click();
   row = page.getByRole('row').filter({ hasText: 'MacBook Pro' });
   await expect(row).toContainText('Ready to collect');
-  await row.getByRole('button', { name: 'Record collection' }).click();
+  await row.getByRole('button', { name: 'Mark collected' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Mark as collected' }).click();
   await expect(row).toContainText('On loan');
-  await row.getByRole('button', { name: 'Record return' }).click();
+  await row.getByRole('button', { name: 'Mark returned' }).click();
   await page.getByRole('dialog').getByRole('button', { name: 'Mark as returned' }).click();
   await expect(row).toHaveCount(0);
   await page.getByRole('button', { name: 'Sign out', exact: true }).click();
@@ -86,7 +86,7 @@ test('a borrower request moves through staff approval, collection and return', a
     .getByRole('navigation', { name: 'Main navigation' })
     .getByRole('link', { name: 'My bookings' })
     .click();
-  await page.getByRole('button', { name: 'Past bookings', exact: true }).click();
+  await page.getByRole('button', { name: 'Past', exact: true }).click();
   await expect(page.getByRole('row').filter({ hasText: 'MacBook Pro' })).toContainText('Returned');
 });
 
@@ -169,7 +169,7 @@ test('role changes refresh the current session and protected pages stay restrict
   const state = await installContractFixture(page);
   await page.goto('/');
   await signIn(page, 'admin');
-  await page.getByRole('link', { name: 'People & roles' }).click();
+  await page.getByRole('link', { name: 'Users' }).click();
   await page.getByRole('button', { name: 'Change role for Alex Morgan' }).click();
   await page
     .getByRole('dialog')
@@ -184,8 +184,8 @@ test('role changes refresh the current session and protected pages stay restrict
     .selectOption('BORROWER');
   await expect(page.getByRole('dialog')).toContainText('remove your access');
   await page.getByRole('button', { name: 'Save role' }).click();
-  await expect(page.getByRole('heading', { name: 'Find your next piece of kit.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'People & roles' })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Equipment', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Users' })).toHaveCount(0);
   const before = state.calls.filter((call) => call.path === '/users').length;
   await page.goto('/admin/users');
   await expect(

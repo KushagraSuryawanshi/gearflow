@@ -53,8 +53,8 @@ function Routes({ path, user }: { path: string; user: User }) {
   if (path === '/admin/categories') return <CategoriesPage />;
   if (path === '/admin/users') return <UsersPage />;
   return (
-    <EmptyState title="This page is not in the equipment room" action={fallback}>
-      The link may have changed. Head back to the collection to find what you need.
+    <EmptyState title="Page not found" action={fallback}>
+      This link may have changed. Return to Equipment to continue.
     </EmptyState>
   );
 }
@@ -67,9 +67,9 @@ function AuthenticatedApp() {
       '/bookings': 'My bookings',
       '/requests': 'Pending requests',
       '/loans': 'Active loans',
-      '/admin/equipment': 'Equipment management',
+      '/admin/equipment': 'Inventory',
       '/admin/categories': 'Categories',
-      '/admin/users': 'People & roles',
+      '/admin/users': 'Users',
     };
     document.title = `${user ? (titles[path] ?? 'Equipment room') : 'Sign in'} · GearFlow`;
     document.getElementById('main-content')?.focus({ preventScroll: true });

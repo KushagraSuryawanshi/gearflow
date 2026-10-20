@@ -40,7 +40,6 @@ function CategoryForm({
     <Dialog title={category ? 'Edit category' : 'Add category'} onClose={onClose} busy={busy}>
       <form onSubmit={(event) => void submit(event)}>
         <div className="dialog-body form-stack">
-          <p className="muted">Use a clear name to help borrowers find the right equipment.</p>
           <label>
             Category name
             <input
@@ -81,9 +80,7 @@ export function CategoriesPage() {
   return (
     <>
       <PageHeading
-        eyebrow="CATEGORIES"
         title="Categories"
-        description="Organise the collection by equipment type."
         actions={
           <button className="button button-primary" onClick={() => setEditing({ category: null })}>
             <Icon name="plus" size={18} />
@@ -93,10 +90,7 @@ export function CategoriesPage() {
       />
       {notice && <Alert tone="success">{notice}</Alert>}
       <section className="panel">
-        <div className="panel-heading">
-          <h2>
-            Equipment categories <span className="count-label">{data?.length ?? '—'}</span>
-          </h2>
+        <div className="panel-heading panel-heading-actions">
           <button className="button button-quiet button-small" onClick={reload} disabled={loading}>
             <Icon name="refresh" size={16} />
             Refresh
@@ -108,12 +102,10 @@ export function CategoriesPage() {
           <ErrorState message={error} retry={reload} />
         ) : data?.length ? (
           <ul className="category-list">
-            {data.map((category, index) => (
+            {data.map((category) => (
               <li key={category.id}>
-                <span className="category-symbol">{String(index + 1).padStart(2, '0')}</span>
                 <div className="category-info">
                   <h3>{category.name}</h3>
-                  <span className="mono">{category.id}</span>
                 </div>
                 <div className="row-actions">
                   <button
@@ -135,9 +127,7 @@ export function CategoriesPage() {
             ))}
           </ul>
         ) : (
-          <EmptyState title="Give the collection some structure">
-            Create your first category before adding equipment.
-          </EmptyState>
+          <EmptyState title="No categories">Add a category before adding equipment.</EmptyState>
         )}
       </section>
       {editing && (

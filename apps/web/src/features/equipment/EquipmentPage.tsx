@@ -44,7 +44,6 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
   }
   return (
     <aside className="booking-panel">
-      <p className="eyebrow">BOOKING DATES</p>
       <h2>Request this equipment</h2>
       {created ? (
         <div className="booking-success">
@@ -55,7 +54,7 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
           <p>
             {formatDate(created.startDate)} to {formatDate(created.endDate)}
           </p>
-          <p>A staff member will review your request. Check My bookings for the latest status.</p>
+          <p>Staff will review your request.</p>
           <Link className="button button-primary" href="/bookings">
             View my bookings
             <Icon name="arrow" size={17} />
@@ -73,9 +72,7 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
         </div>
       ) : (
         <>
-          <p className="muted">
-            Choose your date range. Existing bookings only block overlapping dates.
-          </p>
+          <p className="muted">Choose a start and end date.</p>
           {maintenance && (
             <Alert tone="info">
               This item is under maintenance and cannot be booked right now.
@@ -115,7 +112,7 @@ function RequestBooking({ equipment }: { equipment: Equipment }) {
             </button>
             <p className="form-note">
               <Icon name="info" size={16} />
-              Your booking is confirmed once staff approve it.
+              Staff approval is required.
             </p>
           </form>
         </>
@@ -132,7 +129,6 @@ function EquipmentHistory({ id }: { id: string }) {
     <section className="panel history-panel">
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">LOAN DESK</p>
           <h2>Booking history</h2>
         </div>
         <button className="button button-quiet button-small" onClick={reload} disabled={loading}>
@@ -179,14 +175,10 @@ export function EquipmentPage({ id }: { id: string }) {
             <div className="equipment-detail-layout">
               <div className="equipment-detail">
                 <div className="detail-heading">
-                  <p className="eyebrow">{data.category.name}</p>
                   <h1>{data.name}</h1>
                   <EquipmentBadge maintenance={data.status === 'UNDER_MAINTENANCE'} />
                 </div>
                 <EquipmentArt category={data.category.name} name={data.name} large />
-                <p className="art-disclaimer">
-                  Category illustration. Refer to the item description for included equipment.
-                </p>
                 <p className="equipment-description">
                   {data.description || 'No additional description has been provided for this item.'}
                 </p>
@@ -203,7 +195,7 @@ export function EquipmentPage({ id }: { id: string }) {
                 {user?.role !== 'BORROWER' && (
                   <div className="staff-tools">
                     <div>
-                      <strong>Equipment availability</strong>
+                      <strong>Availability</strong>
                       <p>
                         Maintenance blocks new booking requests. Existing bookings remain in the
                         loan desk.

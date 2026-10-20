@@ -11,7 +11,7 @@ import type { Role, User } from '../../types/api';
 const roleNames: Record<Role, string> = {
   BORROWER: 'Borrower',
   STAFF: 'Staff',
-  ADMIN: 'Administrator',
+  ADMIN: 'Admin',
 };
 const roleDescriptions: Record<Role, string> = {
   BORROWER: 'Browse equipment and manage their own bookings.',
@@ -109,11 +109,7 @@ export function UsersPage() {
   );
   return (
     <>
-      <PageHeading
-        eyebrow="ACCESS"
-        title="People & roles"
-        description="Give each person the access they need to use and manage the equipment room."
-      />
+      <PageHeading title="Users" />
       {notice && <Alert tone="success">{notice}</Alert>}
       <section className="panel">
         <div className="panel-toolbar">
@@ -154,7 +150,7 @@ export function UsersPage() {
         ) : error ? (
           <ErrorState message={error} retry={reload} />
         ) : items.length ? (
-          <div className="table-scroll" tabIndex={0} role="region" aria-label="People and roles">
+          <div className="table-scroll" tabIndex={0} role="region" aria-label="Users">
             <table className="data-table">
               <thead>
                 <tr>
