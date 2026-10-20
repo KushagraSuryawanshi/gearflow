@@ -28,6 +28,18 @@ services:
         condition: service_healthy
     restart: 'no'
 
+  bootstrap-admin:
+    profiles: [bootstrap]
+    image: ghcr.io/${GHCR_NAMESPACE:?GHCR_NAMESPACE is required}/gearflow-tools:${IMAGE_TAG:?IMAGE_TAG is required}
+    environment:
+      <<: *database-environment
+      NODE_ENV: production
+    command: [npm, run, bootstrap:admin, --workspace=@gearflow/api]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: 'no'
+
   api:
     image: ghcr.io/${GHCR_NAMESPACE:?GHCR_NAMESPACE is required}/gearflow-api:${IMAGE_TAG:?IMAGE_TAG is required}
     restart: unless-stopped
