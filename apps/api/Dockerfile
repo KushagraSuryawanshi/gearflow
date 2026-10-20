@@ -15,11 +15,15 @@ COPY apps/api apps/api
 RUN npx prisma generate --schema apps/api/prisma/schema.prisma
 RUN npm run build --workspace=@gearflow/api
 
-FROM build AS migrate
+FROM build AS tools
+
+CMD ["npx", "prisma", "--version"]
+
+FROM tools AS migrate
 
 CMD ["npx", "prisma", "migrate", "deploy", "--schema", "apps/api/prisma/schema.prisma"]
 
-FROM build AS seed
+FROM tools AS seed
 
 CMD ["npx", "tsx", "apps/api/src/seed.ts"]
 

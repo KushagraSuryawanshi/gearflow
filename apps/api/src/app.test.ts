@@ -10,6 +10,18 @@ describe('app basics', () => {
     expect(response.body).toEqual({ data: { status: 'ok' } });
   });
 
+  it('exposes Prometheus process and HTTP metrics', async () => {
+    await request(app).get('/api/health');
+    const response = await request(app).get('/api/metrics');
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toContain('text/plain');
+    expect(response.text).toContain('gearflow_process_cpu_seconds_total');
+    expect(response.text).toContain('gearflow_http_requests_total');
+    expect(response.text).toContain('gearflow_http_request_duration_seconds_bucket');
+    expect(response.text).toContain('route="/api/health"');
+  });
+
   it('returns a NOT_FOUND error for unknown routes', async () => {
     const response = await request(app).get('/api/nope');
 

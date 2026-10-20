@@ -35,7 +35,7 @@ async function seed(): Promise<void> {
   for (const user of demoUsers) {
     await prisma.user.upsert({
       where: { email: user.email },
-      update: {},
+      update: { name: user.name, role: user.role, passwordHash },
       create: { ...user, passwordHash },
     });
   }
@@ -49,7 +49,12 @@ async function seed(): Promise<void> {
     for (const item of items) {
       // Equipment names are not unique in the schema, so check before creating to keep re-runs safe.
       const existing = await prisma.equipment.findFirst({ where: { name: item.name } });
-      if (!existing) {
+      if (existing) {
+        await prisma.equipment.update({
+          where: { id: existing.id },
+          data: { ...item, categoryId: category.id, status: 'AVAILABLE' },
+        });
+      } else {
         await prisma.equipment.create({ data: { ...item, categoryId: category.id } });
       }
     }
