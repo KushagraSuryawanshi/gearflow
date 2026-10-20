@@ -38,9 +38,7 @@ export function InventoryPage() {
   return (
     <>
       <PageHeading
-        eyebrow="INVENTORY"
-        title="Equipment management"
-        description="One record for every physical item. Keep the collection accurate and ready to borrow."
+        title="Inventory"
         actions={
           <button
             className="button button-primary"
@@ -114,7 +112,6 @@ export function InventoryPage() {
                       >
                         {item.name}
                       </Link>
-                      <small className="mono">{item.id}</small>
                     </td>
                     <td data-label="Category">{item.category.name}</td>
                     <td data-label="Availability">
@@ -155,7 +152,7 @@ export function InventoryPage() {
       </section>
       <p className="page-footnote">
         <Icon name="info" size={16} />
-        Open an equipment record to manage maintenance and view its booking history.
+        Open an equipment record to manage maintenance and view booking history.
       </p>
       {editing && data && (
         <EquipmentForm

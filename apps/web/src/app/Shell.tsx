@@ -43,22 +43,19 @@ function Navigation({ user, path, close }: { user: User; path: string; close?: (
   }
   return (
     <nav aria-label="Main navigation">
-      <p className="nav-label">Your workspace</p>
       {item('/equipment', 'Equipment')}
       {item('/bookings', 'My bookings')}
       {user.role !== 'BORROWER' && (
         <>
-          <p className="nav-label">Loan desk</p>
           {item('/requests', 'Pending requests')}
           {item('/loans', 'Active loans')}
         </>
       )}
       {user.role === 'ADMIN' && (
         <>
-          <p className="nav-label">Manage</p>
           {item('/admin/equipment', 'Inventory')}
           {item('/admin/categories', 'Categories')}
-          {item('/admin/users', 'People & roles')}
+          {item('/admin/users', 'Users')}
         </>
       )}
     </nav>
@@ -68,8 +65,7 @@ function Navigation({ user, path, close }: { user: User; path: string; close?: (
 export function Shell({ user, path, children }: { user: User; path: string; children: ReactNode }) {
   const { signOut } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
-  const role =
-    user.role === 'ADMIN' ? 'Administrator' : user.role === 'STAFF' ? 'Staff' : 'Borrower';
+  const role = user.role === 'ADMIN' ? 'Admin' : user.role === 'STAFF' ? 'Staff' : 'Borrower';
   return (
     <div className="app-shell">
       <a className="skip-link" href="#main-content">
@@ -79,7 +75,6 @@ export function Shell({ user, path, children }: { user: User; path: string; chil
         <Link href="/equipment" className="brand-link" aria-label="GearFlow equipment catalogue">
           <Brand />
         </Link>
-        <div className="workspace-label">THE EQUIPMENT ROOM</div>
         <Navigation user={user} path={path} />
         <div className="sidebar-bottom">
           <div className="account">
@@ -112,7 +107,6 @@ export function Shell({ user, path, children }: { user: User; path: string; chil
             <Icon name="menu" />
           </button>
           <span className="workspace-breadcrumb">
-            Workspace <span>/</span>{' '}
             {path.startsWith('/admin')
               ? 'Administration'
               : ['/requests', '/loans'].includes(path)
@@ -130,11 +124,10 @@ export function Shell({ user, path, children }: { user: User; path: string; chil
         </main>
         <footer className="workspace-footer">
           <span>GearFlow equipment booking</span>
-          <span>Borrow. Use. Return.</span>
         </footer>
       </div>
       {menuOpen && (
-        <Dialog title="Your workspace" onClose={() => setMenuOpen(false)}>
+        <Dialog title="Menu" onClose={() => setMenuOpen(false)}>
           <div className="mobile-navigation">
             <Navigation user={user} path={path} close={() => setMenuOpen(false)} />
             <div className="mobile-account">

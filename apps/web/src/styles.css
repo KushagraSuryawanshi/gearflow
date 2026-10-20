@@ -207,19 +207,10 @@ label {
 }
 .mono {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 11px;
 }
 .break-word {
   overflow-wrap: anywhere;
-}
-.eyebrow {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  line-height: 1.6;
-  text-transform: uppercase;
-  color: var(--muted);
 }
 .button {
   display: inline-flex;
@@ -230,7 +221,7 @@ label {
   padding: 11px 16px;
   border: 1px solid transparent;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   line-height: 1.35;
   white-space: nowrap;
@@ -271,7 +262,7 @@ label {
 .button-small {
   min-height: 34px;
   padding: 8px 10px;
-  font-size: 11px;
+  font-size: 13px;
 }
 .full-width {
   width: 100%;
@@ -298,7 +289,7 @@ label {
   color: var(--accent-text);
   background: transparent;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -308,8 +299,7 @@ label {
 }
 .optional {
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
 }
 /* Brand and architectural workspace rail. */
@@ -367,28 +357,6 @@ label {
 .brand-link {
   align-self: flex-start;
 }
-.workspace-label {
-  font-family: var(--mono);
-  color: var(--muted);
-  font-size: 8px;
-  letter-spacing: 0.5px;
-  margin: 16px 0 43px;
-}
-.nav-label {
-  color: var(--muted);
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  padding-top: 20px;
-  margin: 20px 0 10px;
-  border-top: 1px solid var(--line);
-}
-.nav-label:first-child {
-  margin-top: 0;
-  padding-top: 0;
-  border: 0;
-}
 .nav-link {
   min-height: 43px;
   padding: 11px 9px;
@@ -397,7 +365,7 @@ label {
   gap: 9px;
   border-left: 2px solid transparent;
   margin: 2px -9px;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--secondary-text);
 }
 .nav-link:hover {
@@ -432,7 +400,7 @@ label {
 }
 .account strong {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -441,7 +409,7 @@ label {
   display: block;
   color: var(--muted);
   margin-top: 4px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .account .icon-button {
   width: 28px;
@@ -458,13 +426,12 @@ label {
   color: var(--accent-text);
   border: 1px solid var(--tint-line);
   border-radius: 3px;
-  font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
 }
 .avatar-small {
   width: 28px;
   height: 28px;
-  font-size: 9px;
+  font-size: 12px;
 }
 .workspace {
   min-width: 0;
@@ -482,11 +449,7 @@ label {
   padding: 0 40px;
 }
 .workspace-breadcrumb {
-  font-size: 11px;
-  color: var(--muted);
-}
-.workspace-breadcrumb > span {
-  margin: 0 14px;
+  font-size: 12px;
   color: var(--muted);
 }
 .workspace-user {
@@ -495,11 +458,8 @@ label {
   gap: 16px;
 }
 .role-chip {
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
+  font-size: 13px;
   color: var(--muted);
-  letter-spacing: 0.8px;
 }
 main {
   padding: 43px 40px 48px;
@@ -516,8 +476,7 @@ main {
   margin: 0 40px;
   padding: 18px 0;
   border-top: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
 }
 .mobile-brand,
@@ -549,12 +508,12 @@ main {
   font-size: clamp(29px, 2.6vw, 40px);
   letter-spacing: -1.5px;
   line-height: 1.08;
-  margin-top: 12px;
+  margin-top: 0;
   overflow-wrap: anywhere;
 }
 .page-description {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.65;
   margin-top: 14px;
   max-width: 580px;
@@ -595,28 +554,6 @@ main {
   text-decoration: underline;
   text-underline-offset: 5px;
 }
-.collection-index {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding-bottom: 60px;
-  color: var(--muted);
-}
-.collection-index strong {
-  font-family: var(--heading);
-  font-size: 62px;
-  line-height: 1;
-  font-weight: 400;
-  letter-spacing: -4px;
-  color: var(--ink);
-}
-.collection-index span {
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  line-height: 1.7;
-}
 .catalogue-toolbar {
   display: flex;
   align-items: center;
@@ -639,19 +576,19 @@ main {
 }
 .search-field input {
   padding-left: 40px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .select-field {
   width: 185px;
 }
 .select-field select {
-  font-size: 12px;
+  font-size: 14px;
 }
 .checkbox-field {
   flex-direction: row;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 400;
   white-space: nowrap;
   padding: 10px 0 10px 5px;
@@ -670,15 +607,11 @@ main {
   gap: 16px;
   align-items: center;
   margin: 23px 0 16px;
-  font-family: var(--mono);
-  font-size: 10px;
+  font-size: 14px;
   color: var(--muted);
 }
 .results-heading strong {
   color: var(--ink);
-}
-.results-heading > span {
-  font-size: 9px;
 }
 .equipment-grid {
   display: grid;
@@ -713,15 +646,8 @@ main {
   gap: 12px;
   align-items: center;
   color: var(--muted);
-  text-transform: uppercase;
-  font-family: var(--mono);
-  letter-spacing: 0.35px;
-  font-size: 9px;
-  margin-bottom: 10px;
-}
-.equipment-card-category .mono {
-  font-size: 8px;
-  letter-spacing: 0;
+  font-size: 13px;
+  margin-bottom: 8px;
 }
 .equipment-card h2 {
   color: var(--ink);
@@ -735,7 +661,7 @@ main {
 }
 .equipment-card-body > p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.65;
   margin: 9px 0 19px;
   display: -webkit-box;
@@ -755,7 +681,7 @@ main {
   align-items: center;
   gap: 8px;
   color: var(--ink);
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .card-cta svg {
@@ -772,9 +698,7 @@ main {
   padding: 8px 10px;
   background: #eedfbc;
   color: #61451d;
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
+  font-size: 13px;
   border-left: 3px solid #8c6a29;
 }
 /* Original local category artwork, not product photographs. */
@@ -855,7 +779,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   white-space: nowrap;
   padding: 6px 8px;
@@ -1038,13 +962,6 @@ main {
   width: 100%;
   height: 100%;
 }
-.art-disclaimer {
-  font-family: var(--mono);
-  font-size: 9px;
-  color: var(--muted);
-  line-height: 1.6;
-  margin-top: 10px;
-}
 .equipment-description {
   font-size: 14px;
   line-height: 1.8;
@@ -1061,9 +978,7 @@ main {
   gap: 15px;
 }
 .item-facts dt {
-  font-family: var(--mono);
-  font-size: 9px;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--muted);
   margin-bottom: 8px;
 }
@@ -1105,7 +1020,7 @@ main {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   line-height: 1.6;
   margin-top: 17px;
@@ -1172,10 +1087,6 @@ main {
   font-size: 16px;
   font-weight: 600;
 }
-.panel-heading .eyebrow {
-  font-size: 9px;
-  margin-bottom: 7px;
-}
 .history-panel {
   margin-top: 38px;
 }
@@ -1207,18 +1118,16 @@ main {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 12px;
+  font-size: 13px;
 }
 .data-table th {
   background: var(--surface-subtle);
   padding: 12px 16px;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
-  font-family: var(--mono);
+  font-family: inherit;
   font-weight: 400;
-  font-size: 9px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
+  font-size: 12px;
   white-space: nowrap;
 }
 .data-table td {
@@ -1236,13 +1145,8 @@ main {
 .data-table small {
   display: block;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 5px;
-  overflow-wrap: anywhere;
-}
-.data-table .mono {
-  max-width: 280px;
-  font-size: 9px;
   overflow-wrap: anywhere;
 }
 .table-title,
@@ -1260,7 +1164,7 @@ a.table-title:hover {
 }
 .reference-button {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   font-weight: 400;
   margin-top: 7px;
@@ -1272,14 +1176,13 @@ a.table-title:hover {
 .date-cell {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  font-size: 12px;
+  font-size: 13px;
 }
 .date-caption {
   display: inline-block;
-  width: 37px;
+  width: 45px;
   color: var(--muted);
-  font-family: var(--mono);
-  font-size: 8px;
+  font-size: 12px;
 }
 .date-cell small {
   font-size: 12px;
@@ -1295,7 +1198,7 @@ a.table-title:hover {
   text-align: center;
 }
 .approval-action small {
-  font-size: 9px;
+  font-size: 12px;
 }
 .tabs {
   display: flex;
@@ -1339,8 +1242,7 @@ a.table-title:hover {
   white-space: nowrap;
 }
 .queue-count span {
-  font-family: var(--mono);
-  font-size: 10px;
+  font-size: 13px;
   color: var(--muted);
   letter-spacing: 0;
 }
@@ -1380,8 +1282,7 @@ a.table-title:hover {
 }
 .booking-progress li {
   position: relative;
-  font-family: var(--mono);
-  font-size: 8px;
+  font-size: 12px;
   color: var(--muted);
   padding-top: 12px;
   padding-right: 12px;
@@ -1411,17 +1312,15 @@ a.table-title:hover {
   font-weight: 700;
 }
 .booking-closed {
-  font-family: var(--mono);
   color: var(--muted);
-  font-size: 9px;
-  text-transform: uppercase;
+  font-size: 12px;
   margin-top: 16px;
 }
 .page-footnote {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 18px;
   line-height: 1.7;
@@ -1444,13 +1343,6 @@ a.table-title:hover {
 .category-list li:last-child {
   border: 0;
 }
-.category-symbol {
-  width: 32px;
-  font-family: var(--mono);
-  font-size: 15px;
-  color: var(--muted);
-  flex-shrink: 0;
-}
 .category-info {
   flex: 1;
   min-width: 0;
@@ -1460,22 +1352,6 @@ a.table-title:hover {
   font-weight: 600;
   letter-spacing: -0.3px;
   overflow-wrap: anywhere;
-}
-.category-info > span {
-  display: block;
-  font-size: 9px;
-  color: var(--muted);
-  margin-top: 5px;
-  overflow-wrap: anywhere;
-}
-.count-label {
-  display: inline-block;
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--muted);
-  padding: 3px 7px;
-  margin-left: 6px;
 }
 .person-cell {
   display: flex;
@@ -1495,18 +1371,14 @@ a.table-title:hover {
 }
 .you-label {
   display: inline-block;
-  font-family: var(--mono);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 400;
   color: var(--muted);
   margin-left: 8px;
 }
 .user-role {
   padding: 5px 0;
-  font-family: var(--mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 12px;
   color: var(--ink);
 }
 .role-staff {
@@ -1522,14 +1394,12 @@ a.table-title:hover {
   margin-top: 35px;
 }
 .role-guide h2 {
-  font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 500;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 600;
   margin-bottom: 8px;
 }
 .role-guide p {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -1635,16 +1505,16 @@ a.table-title:hover {
 }
 .detail-list dt {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 .detail-list dd {
   margin: 0;
-  font-size: 12px;
+  font-size: 13px;
 }
 .detail-list small {
   display: block;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   overflow-wrap: anywhere;
 }
 .session-screen {
@@ -1674,10 +1544,6 @@ a.table-title:hover {
 .login-story > .brand {
   margin-bottom: 58px;
 }
-.login-story .eyebrow {
-  color: #c1d1ae;
-  font-size: 9px;
-}
 .login-story h1 {
   font-family: var(--heading);
   font-size: clamp(45px, 5.3vw, 77px);
@@ -1686,13 +1552,8 @@ a.table-title:hover {
   letter-spacing: -3.5px;
   margin: 19px 0 24px;
 }
-.login-story h1 em {
-  font-weight: 700;
-  font-style: normal;
-  color: #d6ee86;
-}
 .login-intro {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.8;
   color: #d1dcc8;
   max-width: 325px;
@@ -1705,21 +1566,6 @@ a.table-title:hover {
   aspect-ratio: 1.9;
   background: #b9cba7;
   filter: none;
-}
-.login-steps {
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  border-top: 1px solid #718364;
-  padding-top: 22px;
-  margin-top: auto;
-  font-size: 10px;
-  color: #e4ead9;
-}
-.login-steps span {
-  display: flex;
-  align-items: center;
-  gap: 9px;
 }
 .login-main {
   display: flex;
@@ -1738,12 +1584,6 @@ a.table-title:hover {
   letter-spacing: -1.6px;
   line-height: 1.1;
   margin: 15px 0;
-}
-.login-form-wrap > p:not(.eyebrow) {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--muted);
-  margin-bottom: 29px;
 }
 .login-form {
   display: flex;
@@ -1782,7 +1622,7 @@ a.table-title:hover {
   background: transparent;
   border: 0;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 13px;
 }
 .login-help {
   display: flex;
@@ -1791,7 +1631,7 @@ a.table-title:hover {
   padding: 21px 0;
   margin-top: 25px;
   border-top: 1px solid var(--line);
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
   line-height: 1.7;
 }
@@ -1809,7 +1649,7 @@ a.table-title:hover {
   border-radius: 2px;
   background: transparent;
   color: var(--secondary-text);
-  font-size: 10px;
+  font-size: 12px;
 }
 .theme-toggle:hover {
   background: var(--surface-hover);
@@ -1854,11 +1694,8 @@ a.table-title:hover {
   .sidebar .brand {
     font-size: 25px;
   }
-  .workspace-label {
-    font-size: 7px;
-  }
   .nav-link {
-    font-size: 11px;
+    font-size: 12px;
     gap: 8px;
   }
   main {
@@ -1875,12 +1712,6 @@ a.table-title:hover {
   }
   .catalogue-heading h1 {
     font-size: 46px;
-  }
-  .collection-index {
-    gap: 10px;
-  }
-  .collection-index strong {
-    font-size: 48px;
   }
   .equipment-detail-layout {
     gap: 25px;
@@ -1902,16 +1733,12 @@ a.table-title:hover {
     gap: 12px;
   }
   .booking-progress li {
-    font-size: 7px;
     padding-right: 8px;
   }
 }
 @media (max-width: 950px) {
   .catalogue-heading {
     gap: 15px;
-  }
-  .collection-index {
-    display: none;
   }
   .catalogue-heading .heading-actions {
     position: static;
@@ -1964,9 +1791,6 @@ a.table-title:hover {
   }
   .login-main {
     padding: 35px;
-  }
-  .login-steps {
-    flex-wrap: wrap;
   }
   .login-illustration {
     margin-left: 0;
@@ -2021,7 +1845,7 @@ a.table-title:hover {
   }
   .workspace-footer {
     margin: 0 20px;
-    font-size: 8px;
+    font-size: 12px;
   }
   .page-heading {
     gap: 20px;
@@ -2052,24 +1876,12 @@ a.table-title:hover {
   .equipment-card-footer {
     flex-wrap: wrap;
   }
-  .results-heading > span {
-    max-width: 120px;
-    text-align: right;
-    font-size: 8px;
-    line-height: 1.6;
-  }
   .results-heading {
-    font-size: 9px;
+    font-size: 12px;
   }
   .mobile-navigation .nav-link {
     font-size: 14px;
     min-height: 46px;
-  }
-  .mobile-navigation .nav-label {
-    margin-top: 20px;
-  }
-  .mobile-navigation .nav-label:first-child {
-    margin-top: 0;
   }
   .panel-toolbar .search-field {
     max-width: none;
@@ -2079,14 +1891,14 @@ a.table-title:hover {
     gap: 22px;
   }
   .tabs button {
-    font-size: 11px;
+    font-size: 12px;
   }
   .desk-context {
     gap: 15px;
     align-items: flex-start;
   }
   .desk-context p {
-    font-size: 11px;
+    font-size: 12px;
   }
   .queue-count {
     font-size: 27px;
@@ -2094,7 +1906,7 @@ a.table-title:hover {
   .queue-count span {
     display: block;
     text-align: right;
-    font-size: 9px;
+    font-size: 13px;
   }
   .role-guide {
     grid-template-columns: 1fr;
@@ -2112,10 +1924,6 @@ a.table-title:hover {
   }
   .category-info h3 {
     font-size: 15px;
-  }
-  .category-symbol {
-    width: 23px;
-    font-size: 12px;
   }
   .button-small {
     min-height: 40px;
@@ -2163,10 +1971,8 @@ a.table-title:hover {
   .data-table td::before {
     content: attr(data-label);
     display: block;
-    font-family: var(--mono);
-    font-size: 8px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--muted);
     margin-bottom: 7px;
   }
@@ -2199,7 +2005,7 @@ a.table-title:hover {
     height: 95px;
   }
   .booking-progress li {
-    font-size: 8px;
+    font-size: 12px;
     padding-right: 9px;
   }
   .borrower-register td:last-child:has(.row-actions:empty) {
@@ -2230,15 +2036,11 @@ a.table-title:hover {
     letter-spacing: -2px;
     margin-bottom: 15px;
   }
-  .login-story .eyebrow {
-    font-size: 8px;
-  }
   .login-intro {
-    font-size: 12px;
+    font-size: 13px;
     max-width: 350px;
   }
-  .login-illustration,
-  .login-steps {
+  .login-illustration {
     display: none;
   }
   .login-main {
@@ -2273,7 +2075,7 @@ a.table-title:hover {
     font-size: 13px;
   }
   .equipment-card-category {
-    font-size: 10px;
+    font-size: 13px;
   }
   .equipment-card-footer {
     flex-wrap: nowrap;
@@ -2283,9 +2085,6 @@ a.table-title:hover {
   }
   .catalogue-toolbar .select-field {
     min-width: 145px;
-  }
-  .checkbox-field {
-    font-size: 10px;
   }
   .catalogue-heading h1 {
     font-size: 43px;
@@ -2318,7 +2117,7 @@ a.table-title:hover {
     height: 83px;
   }
   .booking-progress li {
-    font-size: 7px;
+    font-size: 12px;
     padding-right: 7px;
   }
   .detail-list > div {

@@ -79,11 +79,11 @@ export function BookingTable({
               )}
               <td className="date-cell" data-label="Booking dates">
                 <span>
-                  <span className="date-caption">FROM</span>
+                  <span className="date-caption">Start</span>
                   <time dateTime={booking.startDate}>{formatDate(booking.startDate)}</time>
                 </span>
                 <small>
-                  <span className="date-caption">UNTIL</span>
+                  <span className="date-caption">End</span>
                   <time dateTime={booking.endDate}>{formatDate(booking.endDate)}</time>
                 </small>
               </td>

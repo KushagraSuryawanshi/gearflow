@@ -32,22 +32,15 @@ export function LoginPage() {
       <section className="login-story">
         <Brand />
         <h1>
-          Less admin.
+          Book the equipment
           <br />
-          More room
-          <br />
-          <em>to make.</em>
+          you need.
         </h1>
         <p className="login-intro">
-          Find the kit you need, book your dates and keep every handover in one place.
+          Find equipment, request dates and manage returns in one place.
         </p>
         <div className="login-illustration">
           <EquipmentArt category="camera" large />
-        </div>
-        <div className="login-steps">
-          <span>Find your kit</span>
-          <span>Request dates</span>
-          <span>Get to work</span>
         </div>
       </section>
       <main className="login-main">
@@ -55,9 +48,7 @@ export function LoginPage() {
           <div className="login-appearance">
             <ThemeToggle />
           </div>
-          <p className="eyebrow">WELCOME TO GEARFLOW</p>
           <h2>Sign in to your workspace</h2>
-          <p className="muted">Your equipment, bookings and loan desk.</p>
           {notice && <Alert tone="info">{notice}</Alert>}
           <form onSubmit={submit} className="login-form">
             {error && <Alert>{error}</Alert>}

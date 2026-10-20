@@ -37,9 +37,7 @@ export function CataloguePage() {
     <>
       <div className="catalogue-heading">
         <PageHeading
-          eyebrow="EQUIPMENT"
-          title="Find your next piece of kit."
-          description="Shared equipment, ready when you are."
+          title="Equipment"
           actions={
             <Link className="button button-secondary" href="/bookings">
               My bookings
@@ -47,14 +45,6 @@ export function CataloguePage() {
             </Link>
           }
         />
-        <div className="collection-index">
-          <strong>{data ? String(data.equipment.length).padStart(2, '0') : '--'}</strong>
-          <span>
-            items
-            <br />
-            in circulation
-          </span>
-        </div>
       </div>
       <section aria-label="Equipment catalogue">
         <div className="catalogue-toolbar">
@@ -99,9 +89,8 @@ export function CataloguePage() {
                 <strong>{items.length}</strong> {items.length === 1 ? 'item' : 'items'}
                 {category
                   ? ` in ${data?.categories.find((item) => item.id === category)?.name ?? 'this category'}`
-                  : ' in the collection'}
+                  : ''}
               </p>
-              <span>Bookings are subject to staff approval</span>
             </div>
             {items.length ? (
               <div className="equipment-grid">
@@ -114,20 +103,17 @@ export function CataloguePage() {
                     <div className="equipment-card-image">
                       <EquipmentArt category={item.category.name} name={item.name} />
                       {item.status === 'UNDER_MAINTENANCE' && (
-                        <span className="maintenance-flag">In service / maintenance</span>
+                        <span className="maintenance-flag">Under maintenance</span>
                       )}
                     </div>
                     <div className="equipment-card-body">
-                      <div className="equipment-card-category">
-                        {item.category.name}
-                        <span className="mono">{item.id.slice(-6).toUpperCase()}</span>
-                      </div>
+                      <div className="equipment-card-category">{item.category.name}</div>
                       <h2>{item.name}</h2>
-                      <p>{item.description || 'View this item and choose your booking dates.'}</p>
+                      {item.description && <p>{item.description}</p>}
                       <div className="equipment-card-footer">
                         <EquipmentBadge maintenance={item.status === 'UNDER_MAINTENANCE'} />
                         <span className="card-cta">
-                          View kit <Icon name="arrow" size={17} />
+                          View details <Icon name="arrow" size={17} />
                         </span>
                       </div>
                     </div>
@@ -137,9 +123,7 @@ export function CataloguePage() {
             ) : (
               <EmptyState
                 title={
-                  data?.equipment.length
-                    ? 'No equipment matches your search'
-                    : 'The equipment room is getting ready'
+                  data?.equipment.length ? 'No equipment matches your search' : 'No equipment yet'
                 }
                 action={
                   data?.equipment.length ? (
@@ -150,8 +134,8 @@ export function CataloguePage() {
                 }
               >
                 {data?.equipment.length
-                  ? 'Try another name or category, or clear the filters to see the collection.'
-                  : 'Equipment will appear here once an administrator adds it.'}
+                  ? 'Try another name or category, or clear the filters.'
+                  : 'An administrator can add equipment from Inventory.'}
               </EmptyState>
             )}
           </>

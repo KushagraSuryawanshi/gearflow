@@ -43,10 +43,6 @@ export function EquipmentForm({
     <Dialog title={equipment ? 'Edit equipment' : 'Add equipment'} onClose={onClose} busy={busy}>
       <form onSubmit={(event) => void submit(event)}>
         <div className="dialog-body form-stack">
-          <p className="muted">
-            Keep a separate record for each physical item. Include an item number in the name when
-            you have more than one.
-          </p>
           <label>
             Equipment name
             <input

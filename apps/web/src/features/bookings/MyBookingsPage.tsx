@@ -35,9 +35,7 @@ export function MyBookingsPage() {
   return (
     <>
       <PageHeading
-        eyebrow="BOOKINGS"
         title="My bookings"
-        description="Your kit, from request to return."
         actions={
           <Link className="button button-primary" href="/equipment">
             <Icon name="plus" size={18} />
@@ -59,11 +57,7 @@ export function MyBookingsPage() {
                   setStatus('');
                 }}
               >
-                {value === 'current'
-                  ? 'Current bookings'
-                  : value === 'past'
-                    ? 'Past bookings'
-                    : 'All bookings'}
+                {value === 'current' ? 'Current' : value === 'past' ? 'Past' : 'All'}
               </button>
             ))}
           </div>
@@ -119,8 +113,7 @@ export function MyBookingsPage() {
               </Link>
             }
           >
-            Your requests and loans will appear here. Try another view or find equipment for your
-            next project.
+            Try another view or browse equipment.
           </EmptyState>
         )}
       </section>
