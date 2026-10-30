@@ -1,124 +1,109 @@
 # GearFlow
 
-GearFlow is a web app for managing shared equipment bookings and loans inside an organisation. Users can browse individual items, request them for a date range, and follow each booking through approval, collection and return. Staff run the loan desk, while administrators manage the inventory, categories and user roles.
+GearFlow was built as part of a larger university project for SWE40006 - Software Deployment and Evolution at Swinburne University of Technology.
 
-## What it does
+The repo was only one part of the overall project. We also had to design the architecture, prepare diagrams and documentation, write a roughly 50-page final report, and prepare the final presentation/demo, which I can't share here because of university submission requirements. We started with the idea of building something meaningful enough to actually deploy, test and reason about properly. The point wasn't to pretend this needed to scale to millions of users and start adding load balancers everywhere, but to have a real enough system where the deployment architecture and trade-offs actually mattered.
 
-- **Borrower:** browses and filters equipment, requests booking dates, views their own bookings and cancels eligible requests.
-- **Staff:** can also review requests, record collections and returns, set maintenance status, and view an item's booking history.
-- **Administrator:** has the staff tools plus equipment, category and user-role management.
+GearFlow itself is an equipment booking system where borrowers can request equipment, staff can approve and manage loans, and admins can manage inventory and users.
 
-All three roles can make bookings. Staff and administrators still need another staff member or administrator to approve a booking they made themselves.
+**More detail:** [Application docs](docs/APP.md) · [Deployment and operations](docs/DEVOPS.md)
 
-## Main flow
+---
 
-A new request starts as **Pending**. Staff or an administrator can **Approve** or **Reject** it. An approved booking is marked **Collected** at handover and **Returned** when the item comes back. The person who made a booking can cancel it while it is pending or approved.
+## Application
 
-Approved and collected bookings cannot overlap for the same physical item. Pending requests may overlap, so availability is checked again during approval. Equipment under maintenance cannot receive new booking requests, and users can only view and cancel their own bookings. Permission and ownership rules are enforced by the API, including the rule that staff and administrators cannot approve their own requests.
+<p align="center">
+  <img src="docs/images/app/catalogue.png" alt="GearFlow equipment catalogue" width="900">
+</p>
+
+Borrowers can browse equipment, request a booking and keep track of their current and past bookings.
+
+| Booking request | My bookings |
+| --- | --- |
+| ![Booking request](docs/images/app/booking-request.png) | ![My bookings](docs/images/app/my-bookings.png) |
+
+Staff can review requests, approve or reject them, and record the rest of the loan flow. Admins can manage the inventory and other application data.
+
+| Staff requests | Admin inventory |
+| --- | --- |
+| ![Staff pending requests](docs/images/app/staff-pending-requests.png) | ![Admin inventory](docs/images/app/admin-view.png) |
+
+The frontend is also responsive for smaller screens.
+
+<p align="center">
+  <img src="docs/images/app/mobile-catalogue.png" alt="GearFlow mobile catalogue" width="320">
+</p>
+
+---
+
+## Deployment side
+
+This was the main part of the project.
+
+```text
+GitHub
+  -> GitHub Actions checks
+  -> Docker images pushed to GHCR with the commit SHA
+  -> deploy to staging
+  -> Playwright runs against deployed staging
+  -> promote the same SHA to production
+  -> Prometheus + Node Exporter + Grafana
+```
+
+A few things that were implemented and verified:
+
+- pull requests run the application checks before release work
+- release images are tagged with the full Git commit SHA
+- staging and production use separate EC2 environments and databases
+- Playwright runs against the deployed staging application
+- production only runs after the staging test passes
+- the same tested SHA is promoted to production instead of rebuilding it
+- production monitoring uses Prometheus, Node Exporter and Grafana
+
+The AWS servers are not kept online as a permanent public demo.
+
+For the actual deployment setup, scripts, Compose files, monitoring and release flow, see [docs/DEVOPS.md](docs/DEVOPS.md).
+
+---
 
 ## Stack
 
-- **Frontend:** React, TypeScript, Vite and Tailwind CSS
-- **Backend:** Node.js, Express, TypeScript, Zod and JWT authentication
-- **Database:** PostgreSQL and Prisma
-- **Testing:** Vitest, Supertest and Playwright
-- **Platform:** Docker, Docker Compose, Nginx and GitHub Actions
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** Node.js, Express, TypeScript
+- **Database:** PostgreSQL, Prisma
+- **Testing:** Vitest, Supertest, Playwright
+- **Deployment:** Docker, Docker Compose, GitHub Actions, GHCR, AWS EC2
+- **Monitoring:** Prometheus, Node Exporter, Grafana
+- **Web server:** Nginx
 
-## Running locally
+---
 
-You need Git, Docker and Docker Compose. Clone the repository, then create the local environment file from the example:
+## Run locally
 
-```sh
-git clone <repository-url>
-cd gearflow
+```bash
 cp .env.example .env
-```
-
-The example publishes PostgreSQL on host port `5433` to avoid a common local PostgreSQL port conflict. Change `POSTGRES_PORT` in `.env` if that port is already in use.
-
-Build and start the application:
-
-```sh
 docker compose up --build -d
-```
-
-Compose waits for PostgreSQL to become healthy, runs `prisma migrate deploy` in the one-shot `migrate` service, and starts the API only after migration succeeds. Normal Compose startup does not need `prisma migrate dev`.
-
-Load the demo data explicitly after startup:
-
-```sh
 docker compose --profile seed run --rm seed
 ```
 
-Open [http://localhost:8080](http://localhost:8080). The web container serves the React build through Nginx and proxies `/api` requests to the API container.
-
-### Demo accounts
-
-The seed creates these local demo accounts:
-
-| Role          | Email                    |
-| ------------- | ------------------------ |
-| Borrower      | `borrower@gearflow.test` |
-| Staff         | `staff@gearflow.test`    |
-| Administrator | `admin@gearflow.test`    |
-
-Their shared password is `GearFlow-demo-1`. These credentials are for local/demo use only.
-
-## Useful commands
-
-```sh
-# Start or rebuild the container stack
-docker compose up --build -d
-
-# Stop the stack
-docker compose down
-
-# Load or refresh the idempotent demo seed
-docker compose --profile seed run --rm seed
-
-# Install dependencies for checks outside Docker
-npm ci
-
-# Formatting, linting and type checks
-npm run format:check
-npm run lint
-npm run typecheck
-
-# API and frontend unit tests
-npm test
-
-# Frontend browser tests
-npm run test:ui --workspace=@gearflow/web
-
-# Production builds
-npm run build
-```
-
-The API tests expect PostgreSQL at the `TEST_DATABASE_URL` environment variable. If it is not set, they use the local test database on port `5433` and create that database if needed.
-
-## Project structure
+Then open:
 
 ```text
-apps/
-  web/       React frontend and its unit/browser tests
-  api/       Express API, Prisma schema, migrations and API tests
-e2e/         Shared Playwright test workspace
-infra/       Nginx configuration
-docs/        Application documentation
+http://localhost:8080
 ```
 
-Repository-wide scripts and the Compose configuration live at the root. The current GitHub Actions workflow runs linting, type checks, unit/API tests and builds against PostgreSQL.
+To stop it:
 
-## Testing
+```bash
+docker compose down
+```
 
-The API suite covers authentication, permissions, equipment and category management, booking transitions, overlap handling, maintenance, cancellation and self-approval. It currently has 176 tests and enforces 80% line and branch coverage when `npm run test:coverage --workspace=@gearflow/api` is run.
+See [docs/APP.md](docs/APP.md) for the application details and demo users.
 
-The frontend has 16 Vitest unit tests for API/session handling and booking UI rules. Its 9 Playwright browser tests exercise the main borrower, staff and administrator flows, along with failure states, themes, keyboard use and responsive layouts.
+---
 
-## More detail
+## Project status
 
-[docs/APP.md](docs/APP.md) describes the roles, booking rules, architecture, routes and data model in more detail.
+The university project is complete.
 
-## Deployment
-
-Deployment work is handled separately and is not finished yet. It will build on the repository's container setup and CI workflow; staging, production, release publishing and monitoring are not documented as completed features.
+The repo keeps the application, tests, deployment setup and documentation together even though the AWS environments are no longer kept running.
